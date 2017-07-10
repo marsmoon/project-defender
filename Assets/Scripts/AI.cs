@@ -11,6 +11,7 @@ public class AI : MonoBehaviour {
 	float searchTimer;
 	float attackTimer;
 	protected GameObject attackTarget = null;
+	string enemyTag = "";
 
 
 	// Use this for initialization
@@ -18,6 +19,11 @@ public class AI : MonoBehaviour {
 	{
 		searchTimer = 0f;
 		attackTimer = attackInterval;
+
+		if (gameObject.tag == "Player")
+			enemyTag = "Enemy";
+		else if (gameObject.tag == "Enemy")
+			enemyTag = "Player";
 	}
 	
 	// Update is called once per frame
@@ -44,12 +50,24 @@ public class AI : MonoBehaviour {
 
 	protected virtual void Attack(GameObject target)
 	{
+		SetGunRotation (target.transform.position);
+	}
 
+	// sets the current gun rotation based on the current mouse position
+	private void SetGunRotation(Vector3 targetPos){
+		Vector3 diff = targetPos - transform.position;
+		diff.Normalize();
+		// z and x because our axis are fucked
+		float rot_z = Mathf.Atan2(diff.z, diff.x) * Mathf.Rad2Deg;
+		transform.rotation = Quaternion.Euler(90, 0f, rot_z - 90);
 	}
 
 	protected virtual GameObject GetClosestTarget()
 	{
-		GameObject[] targets = GameObject.FindGameObjectsWithTag ("Player");
+		if (enemyTag == "")
+			return null;
+		
+		GameObject[] targets = GameObject.FindGameObjectsWithTag (enemyTag);
 		GameObject closestTarget = null;
 		float closestDistance = -1;
 
