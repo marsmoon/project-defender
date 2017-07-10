@@ -4,13 +4,15 @@ using UnityEngine;
 
 public class PlayerControls : MonoBehaviour {
 
-	GameObject gun;
+	GameObject gunTip;
+
+
 	// Use this for initialization
 	void Start () 
 	{
-		gun = GameObject.Find ("Gun");
-		if (gun == null)
-			Debug.LogWarning ("No gun!");
+		gunTip = GameObject.Find ("GunTip");
+		if (gunTip == null)
+			Debug.LogWarning ("No gunTip!");
 	}
 	
 	// Update is called once per frame
@@ -24,7 +26,7 @@ public class PlayerControls : MonoBehaviour {
 		diff.Normalize();
 		// z and x because our axis are fucked
 		float rot_z = Mathf.Atan2(diff.z, diff.x) * Mathf.Rad2Deg;
-		gun.transform.rotation = Quaternion.Euler(90, 0f, rot_z - 90);
+		transform.rotation = Quaternion.Euler(90, 0f, rot_z - 90);
 	}
 	// gets the current mouse position 
 	private Vector3 getCurrentMousePos(){
