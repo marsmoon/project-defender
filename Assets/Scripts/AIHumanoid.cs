@@ -14,10 +14,11 @@ public class AIHumanoid : AI {
 
 
 	// Use this for initialization
-	void Start () 
+	protected override void Start () 
 	{
 		agent = GetComponent<NavMeshAgent> ();
 		weapons = gameObject.GetComponentsInChildren<Weapon> ();
+		base.Start ();
 	}
 
 	protected override void Attack(GameObject target)

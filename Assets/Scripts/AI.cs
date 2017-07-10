@@ -11,11 +11,11 @@ public class AI : MonoBehaviour {
 	float searchTimer;
 	float attackTimer;
 	protected GameObject attackTarget = null;
-	string enemyTag = "";
+	protected string enemyTag = "";
 
 
 	// Use this for initialization
-	void Start () 
+	protected virtual void Start () 
 	{
 		searchTimer = 0f;
 		attackTimer = attackInterval;
