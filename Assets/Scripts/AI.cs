@@ -12,7 +12,7 @@ public class AI : MonoBehaviour {
 	float attackTimer;
 	protected GameObject attackTarget = null;
 	protected string enemyTag = "";
-
+	public float speed = 1.75f;
 
 	// Use this for initialization
 	protected virtual void Start () 
@@ -59,7 +59,7 @@ public class AI : MonoBehaviour {
 		diff.Normalize();
 		// z and x because our axis are fucked
 		float rot_z = Mathf.Atan2(diff.z, diff.x) * Mathf.Rad2Deg;
-		transform.rotation = Quaternion.Euler(90, 0f, rot_z - 90);
+		transform.rotation = Quaternion.Slerp(this.transform.rotation,Quaternion.Euler(90, 0f, rot_z - 90), Time.deltaTime * speed);
 	}
 
 	protected virtual GameObject GetClosestTarget()
