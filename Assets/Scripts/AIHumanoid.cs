@@ -19,17 +19,12 @@ public class AIHumanoid : AI {
 		agent = GetComponent<NavMeshAgent> ();
 		weapons = gameObject.GetComponentsInChildren<Weapon> ();
 	}
-	
-	// Update is called once per frame
-//	void Update () 
-//	{
-//
-//	}
 
 	protected override void Attack(GameObject target)
 	{
 		float dist = Vector3.Distance (target.transform.position, transform.position);
-		if (dist <= attackRange)
+		transform.LookAt (target.transform.position);
+		if (dist <= attackRange && AreBothArmsHitting())
 		{
 			foreach (Weapon wep in weapons)
 			{
@@ -49,6 +44,17 @@ public class AIHumanoid : AI {
 			agent.SetDestination (position);
 			lastDestination = position;
 		}
+	}
+
+	bool AreBothArmsHitting()
+	{
+		foreach (Weapon wep in weapons)
+		{
+			if (!wep.IsHittingEnemy())
+				return false;
+		}
+
+		return true;
 	}
 
 
