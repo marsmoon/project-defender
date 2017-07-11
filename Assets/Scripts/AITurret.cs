@@ -19,7 +19,7 @@ public class AITurret : AI {
 		diff.Normalize();
 		// z and x because our axis are fucked
 		float rot_z = Mathf.Atan2(diff.z, diff.x) * Mathf.Rad2Deg;
-		transform.rotation = Quaternion.Slerp(this.transform.rotation,Quaternion.Euler(90, 0f, rot_z - 90), Time.deltaTime * speed);
+		transform.rotation = Quaternion.Slerp(this.transform.rotation,Quaternion.Euler(90, 0f, rot_z - 90), Time.deltaTime * rotatingSpeed);
 	}
 
 	protected override GameObject GetClosestTarget(){

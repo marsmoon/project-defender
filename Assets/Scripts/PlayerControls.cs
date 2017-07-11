@@ -8,6 +8,7 @@ public class PlayerControls : MonoBehaviour {
 	public float range = 20f;
 	public GameObject hitParticle;
 	public GameObject hitDirtParticle;
+	public GameObject shellsParticle;
 	Gun gun;
 
 
@@ -53,6 +54,7 @@ public class PlayerControls : MonoBehaviour {
 		gun.SetRange (range);
 		gun.SetHitParticle (hitParticle);
 		gun.SetHitDirtParticle (hitDirtParticle);
+		gun.SetShellsParticle (shellsParticle);
 	}
 
 }

@@ -7,6 +7,7 @@ public class Gun : MonoBehaviour {
 	GameObject gunTip;
 	GameObject hitParticle;
 	GameObject hitDirtParticle;
+	GameObject shellsParticle;
 	float damage;
 	float range;
 	LayerMask layerMask = 1 << 8;
@@ -43,6 +44,8 @@ public class Gun : MonoBehaviour {
 		{
 			Instantiate (hitDirtParticle, ray.GetPoint (range), Quaternion.identity);
 		}
+
+		Instantiate (shellsParticle, gunTip.transform.position, transform.rotation);
 	}
 
 	public void SetDamage(float amount)
@@ -63,5 +66,10 @@ public class Gun : MonoBehaviour {
 	public void SetHitDirtParticle(GameObject particle)
 	{
 		hitDirtParticle = particle;
+	}
+
+	public void SetShellsParticle(GameObject particle)
+	{
+		shellsParticle = particle;
 	}
 }

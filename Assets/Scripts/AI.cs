@@ -13,6 +13,7 @@ public class AI : MonoBehaviour {
 	[Header("Effects")]
 	public GameObject hitParticle;
 	public GameObject hitDirtParticle;
+	public GameObject shellsParticle;
 	protected GameObject attackTarget = null;
 	protected string enemyTag = "";
 	float searchTimer;
@@ -47,7 +48,9 @@ public class AI : MonoBehaviour {
 		if (searchTimer <= 0)
 		{
 			attackTarget = GetClosestTarget ();
-			SetGunRotation (attackTarget.transform.position);
+			if (attackTarget != null)
+				SetGunRotation (attackTarget.transform.position);
+			
 			searchTimer = searchInterval;
 		}
 
@@ -73,7 +76,7 @@ public class AI : MonoBehaviour {
 		diff.Normalize();
 		// z and x because our axis are fucked
 		float rot_z = Mathf.Atan2(diff.z, diff.x) * Mathf.Rad2Deg;
-		transform.rotation = Quaternion.Slerp(this.transform.rotation,Quaternion.Euler(90, 0f, rot_z - 90), Time.deltaTime * speed);
+		transform.rotation = Quaternion.Slerp(this.transform.rotation,Quaternion.Euler(90, 0f, rot_z - 90), Time.deltaTime * rotatingSpeed);
 	}
 
 	protected virtual GameObject GetClosestTarget()
@@ -104,5 +107,6 @@ public class AI : MonoBehaviour {
 		gun.SetRange (attackRange);
 		gun.SetHitParticle (hitParticle);
 		gun.SetHitDirtParticle (hitDirtParticle);
+		gun.SetShellsParticle (shellsParticle);
 	}
 }
