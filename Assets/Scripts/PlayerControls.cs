@@ -6,6 +6,7 @@ public class PlayerControls : MonoBehaviour {
 
 	public float damage = 15f;
 	public float range = 20f;
+	[Range(0f, 100f)] public float accuracy = 75f;
 	public GameObject hitParticle;
 	public GameObject hitDirtParticle;
 	public GameObject shellsParticle;
@@ -19,7 +20,7 @@ public class PlayerControls : MonoBehaviour {
 		if (gun == null)
 			Debug.LogWarning ("No gun!");
 
-		SetGunProperties ();
+		gun.SetProperties(damage, range, accuracy, hitParticle, hitDirtParticle, shellsParticle);
 	}
 	
 	// Update is called once per frame
@@ -28,9 +29,7 @@ public class PlayerControls : MonoBehaviour {
 		SetGunRotation (GetCurrentMousePos ());
 
 		if (Input.GetButtonDown ("Fire1"))
-		{
 			gun.Fire ();
-		}
 	}
 
 	// sets the current gun rotation based on the current mouse position
@@ -46,15 +45,6 @@ public class PlayerControls : MonoBehaviour {
 	private Vector3 GetCurrentMousePos(){
 		Vector3 currentPos = Camera.main.ScreenToWorldPoint (Input.mousePosition);
 		return currentPos;
-	}
-
-	void SetGunProperties()
-	{
-		gun.SetDamage (damage);
-		gun.SetRange (range);
-		gun.SetHitParticle (hitParticle);
-		gun.SetHitDirtParticle (hitDirtParticle);
-		gun.SetShellsParticle (shellsParticle);
 	}
 
 }

@@ -8,11 +8,6 @@ public class Weapon : MonoBehaviour {
 	GameObject hitParticle;
 
 
-	void Start()
-	{
-
-	}
-
 	// Update is called once per frame
 	void Update () 
 	{

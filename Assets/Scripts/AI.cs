@@ -10,6 +10,7 @@ public class AI : MonoBehaviour {
 	public float attackInterval = 1f;
 	public float searchInterval = 3f;
 	public float attackRange = 1f;
+	[Range(0f, 100f)] public float accuracy = 75f;
 	[Header("Effects")]
 	public GameObject hitParticle;
 	public GameObject hitDirtParticle;
@@ -35,7 +36,7 @@ public class AI : MonoBehaviour {
 		gun = gameObject.GetComponentInChildren<Gun> ();
 
 		if (gun != null)
-			SetGunProperties ();
+			gun.SetProperties(damage, attackRange, accuracy, hitParticle, hitDirtParticle, shellsParticle);
 			
 	}
 	
@@ -60,6 +61,10 @@ public class AI : MonoBehaviour {
 			{
 				Attack (attackTarget);
 				attackTimer = attackInterval;
+
+			} else
+			{
+				searchTimer = 0f;
 			}
 		}
 	}
@@ -100,13 +105,5 @@ public class AI : MonoBehaviour {
 
 		return closestTarget;
 	}
-
-	void SetGunProperties()
-	{
-		gun.SetDamage (damage);
-		gun.SetRange (attackRange);
-		gun.SetHitParticle (hitParticle);
-		gun.SetHitDirtParticle (hitDirtParticle);
-		gun.SetShellsParticle (shellsParticle);
-	}
+		
 }

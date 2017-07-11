@@ -8,17 +8,26 @@ public class Gun : MonoBehaviour {
 	GameObject hitParticle;
 	GameObject hitDirtParticle;
 	GameObject shellsParticle;
+	GameObject shellsSpawn;
 	float damage;
 	float range;
+	float accuracy;
 	LayerMask layerMask = 1 << 8;
 
 
 	// Use this for initialization
 	void Start () {
 		layerMask = ~layerMask;
+
 		gunTip = transform.Find ("GunTip").gameObject;
 		if (gunTip == null)
 			Debug.LogWarning ("No gunTip!");
+		
+		shellsSpawn = transform.Find ("Shells").gameObject;
+		if (shellsSpawn == null)
+			Debug.LogWarning ("No Shells");
+
+		shellsSpawn.transform.localPosition = new Vector3(-0.65f, -0.2f, -1f);
 	}
 	
 	// Update is called once per frame
@@ -30,7 +39,11 @@ public class Gun : MonoBehaviour {
 	public void Fire()
 	{
 		RaycastHit hit;
-		Ray ray = new Ray (gunTip.transform.position, gunTip.transform.forward);
+		Vector3 dir = gunTip.transform.forward;
+		dir.x += Random.Range (-accuracy, accuracy);
+		dir.z += Random.Range (-accuracy, accuracy);
+
+		Ray ray = new Ray (gunTip.transform.position, dir);
 
 		if (Physics.Raycast (ray, out hit, range, layerMask))
 		{
@@ -45,31 +58,18 @@ public class Gun : MonoBehaviour {
 			Instantiate (hitDirtParticle, ray.GetPoint (range), Quaternion.identity);
 		}
 
-		Instantiate (shellsParticle, gunTip.transform.position, transform.rotation);
+		Instantiate (shellsParticle, shellsSpawn.transform.position, transform.rotation);
 	}
 
-	public void SetDamage(float amount)
+	public void SetProperties(float damage, float range, float accuracy, GameObject hitParticle, GameObject hitDirtParticle, 
+		GameObject shellsParticle)
 	{
-		damage = amount;
+		this.damage = damage;
+		this.range = range;
+		this.hitParticle = hitParticle;
+		this.hitDirtParticle = hitDirtParticle;
+		this.shellsParticle = shellsParticle;
+		this.accuracy = (100 - accuracy)/100;
 	}
-
-	public void SetRange(float amount)
-	{
-		range = amount;
-	}
-
-	public void SetHitParticle(GameObject particle)
-	{
-		hitParticle = particle;
-	}
-
-	public void SetHitDirtParticle(GameObject particle)
-	{
-		hitDirtParticle = particle;
-	}
-
-	public void SetShellsParticle(GameObject particle)
-	{
-		shellsParticle = particle;
-	}
+		
 }
