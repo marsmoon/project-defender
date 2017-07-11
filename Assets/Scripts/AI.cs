@@ -4,18 +4,20 @@ using UnityEngine;
 
 public class AI : MonoBehaviour {
 
+	public float rotatingSpeed = 1.75f;
 	[Header("Attack")]
 	public float damage = 10f;
 	public float attackInterval = 1f;
 	public float searchInterval = 3f;
 	public float attackRange = 1f;
-	float searchTimer;
-	float attackTimer;
-	protected GameObject attackTarget = null;
-	protected string enemyTag = "";
-	Gun gun;
+	[Header("Effects")]
 	public GameObject hitParticle;
 	public GameObject hitDirtParticle;
+	protected GameObject attackTarget = null;
+	protected string enemyTag = "";
+	float searchTimer;
+	float attackTimer;
+	Gun gun;
 
 
 	// Use this for initialization
@@ -45,6 +47,7 @@ public class AI : MonoBehaviour {
 		if (searchTimer <= 0)
 		{
 			attackTarget = GetClosestTarget ();
+			SetGunRotation (attackTarget.transform.position);
 			searchTimer = searchInterval;
 		}
 
@@ -60,7 +63,7 @@ public class AI : MonoBehaviour {
 
 	protected virtual void Attack(GameObject target)
 	{
-		SetGunRotation (target.transform.position);
+//		SetGunRotation (target.transform.position);
 		gun.Fire();
 	}
 
@@ -70,7 +73,7 @@ public class AI : MonoBehaviour {
 		diff.Normalize();
 		// z and x because our axis are fucked
 		float rot_z = Mathf.Atan2(diff.z, diff.x) * Mathf.Rad2Deg;
-		transform.rotation = Quaternion.Euler(90, 0f, rot_z - 90);
+		transform.rotation = Quaternion.Slerp(this.transform.rotation,Quaternion.Euler(90, 0f, rot_z - 90), Time.deltaTime * speed);
 	}
 
 	protected virtual GameObject GetClosestTarget()
