@@ -4,21 +4,32 @@ using UnityEngine;
 
 public class PlayerControls : MonoBehaviour {
 
-	GameObject gunTip;
+	public float damage = 15f;
+	public float range = 20f;
+	public GameObject hitParticle;
+	public GameObject hitDirtParticle;
+	Gun gun;
 
 
 	// Use this for initialization
 	void Start () 
 	{
-		gunTip = GameObject.Find ("GunTip");
-		if (gunTip == null)
-			Debug.LogWarning ("No gunTip!");
+		gun = gameObject.GetComponentInChildren<Gun>();
+		if (gun == null)
+			Debug.LogWarning ("No gun!");
+
+		SetGunProperties ();
 	}
 	
 	// Update is called once per frame
 	void Update () 
 	{
 		SetGunRotation (GetCurrentMousePos ());
+
+		if (Input.GetButtonDown ("Fire1"))
+		{
+			gun.Fire ();
+		}
 	}
 
 	// sets the current gun rotation based on the current mouse position
@@ -34,6 +45,14 @@ public class PlayerControls : MonoBehaviour {
 	private Vector3 GetCurrentMousePos(){
 		Vector3 currentPos = Camera.main.ScreenToWorldPoint (Input.mousePosition);
 		return currentPos;
+	}
+
+	void SetGunProperties()
+	{
+		gun.SetDamage (damage);
+		gun.SetRange (range);
+		gun.SetHitParticle (hitParticle);
+		gun.SetHitDirtParticle (hitDirtParticle);
 	}
 
 }

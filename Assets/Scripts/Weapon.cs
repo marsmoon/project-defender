@@ -5,10 +5,17 @@ using UnityEngine;
 public class Weapon : MonoBehaviour {
 
 	float range = 0.5f;
+	GameObject hitParticle;
 
-	
+
+	void Start()
+	{
+
+	}
+
 	// Update is called once per frame
-	void Update () {
+	void Update () 
+	{
 		Debug.DrawRay (transform.position, -transform.up * range, Color.red);
 	}
 
@@ -20,7 +27,10 @@ public class Weapon : MonoBehaviour {
 		{
 			Health health = hit.collider.gameObject.GetComponent<Health> ();
 			if (health != null)
+			{
 				health.TakeDamage (damage);
+				Instantiate (hitParticle, hit.point, Quaternion.identity);
+			}
 		}
 	}
 
@@ -31,5 +41,10 @@ public class Weapon : MonoBehaviour {
 			return true;
 		 else
 			return false;
+	}
+
+	public void SetHitParticle(GameObject particle)
+	{
+		hitParticle = particle;
 	}
 }

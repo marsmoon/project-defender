@@ -5,7 +5,6 @@ using UnityEngine.AI;
 
 public class AIHumanoid : AI {
 
-	public float attackRange = 1f;
 	[Header("Movement")]
 	public float movementSpeed = 10f;
 	NavMeshAgent agent;
@@ -18,6 +17,7 @@ public class AIHumanoid : AI {
 	{
 		agent = GetComponent<NavMeshAgent> ();
 		weapons = gameObject.GetComponentsInChildren<Weapon> ();
+		SetWeaponsProperties ();
 		base.Start ();
 	}
 
@@ -56,6 +56,14 @@ public class AIHumanoid : AI {
 		}
 
 		return true;
+	}
+
+	void SetWeaponsProperties()
+	{
+		foreach (Weapon wep in weapons)
+		{
+			wep.SetHitParticle (hitParticle);
+		}
 	}
 
 

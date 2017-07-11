@@ -8,22 +8,32 @@ public class AI : MonoBehaviour {
 	public float damage = 10f;
 	public float attackInterval = 1f;
 	public float searchInterval = 3f;
+	public float attackRange = 1f;
 	float searchTimer;
 	float attackTimer;
 	protected GameObject attackTarget = null;
 	protected string enemyTag = "";
+	Gun gun;
+	public GameObject hitParticle;
+	public GameObject hitDirtParticle;
 
 
 	// Use this for initialization
 	protected virtual void Start () 
 	{
 		searchTimer = 0f;
-		attackTimer = attackInterval;
+		attackTimer = 0f;
 
 		if (gameObject.tag == "Player")
 			enemyTag = "Enemy";
 		else if (gameObject.tag == "Enemy")
 			enemyTag = "Player";
+
+		gun = gameObject.GetComponentInChildren<Gun> ();
+
+		if (gun != null)
+			SetGunProperties ();
+			
 	}
 	
 	// Update is called once per frame
@@ -51,6 +61,7 @@ public class AI : MonoBehaviour {
 	protected virtual void Attack(GameObject target)
 	{
 		SetGunRotation (target.transform.position);
+		gun.Fire();
 	}
 
 	// sets the current gun rotation based on the current mouse position
@@ -82,5 +93,13 @@ public class AI : MonoBehaviour {
 		}
 
 		return closestTarget;
+	}
+
+	void SetGunProperties()
+	{
+		gun.SetDamage (damage);
+		gun.SetRange (attackRange);
+		gun.SetHitParticle (hitParticle);
+		gun.SetHitDirtParticle (hitDirtParticle);
 	}
 }
