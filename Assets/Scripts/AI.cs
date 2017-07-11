@@ -35,6 +35,7 @@ public class AI : MonoBehaviour {
 		if (searchTimer <= 0)
 		{
 			attackTarget = GetClosestTarget ();
+			SetGunRotation (attackTarget.transform.position);
 			searchTimer = searchInterval;
 		}
 
@@ -50,7 +51,7 @@ public class AI : MonoBehaviour {
 
 	protected virtual void Attack(GameObject target)
 	{
-		SetGunRotation (target.transform.position);
+		
 	}
 
 	// sets the current gun rotation based on the current mouse position
