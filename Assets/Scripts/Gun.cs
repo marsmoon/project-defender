@@ -6,9 +6,9 @@ public class Gun : MonoBehaviour {
 
 	GameObject gunTip;
 	GameObject hitParticle;
-	GameObject hitDirtParticle;
 	GameObject shellsParticle;
 	GameObject shellsSpawn;
+	GameObject muzzleFlash;
 	float damage;
 	float range;
 	float accuracy;
@@ -47,29 +47,33 @@ public class Gun : MonoBehaviour {
 
 		if (Physics.Raycast (ray, out hit, range, layerMask))
 		{
-			Instantiate (hitParticle, hit.point, Quaternion.identity);
-
 			Health health = hit.collider.gameObject.GetComponent<Health> ();
 			if (health != null)
+			{
 				health.TakeDamage (damage);
+				if (health.hitEffect != null)
+					Instantiate (health.hitEffect, hit.point, Quaternion.LookRotation(hit.normal));
+			}
 
 		} else
 		{
-			Instantiate (hitDirtParticle, ray.GetPoint (range), Quaternion.identity);
+			Instantiate (hitParticle, ray.GetPoint (range), Quaternion.identity);
 		}
 
 		Instantiate (shellsParticle, shellsSpawn.transform.position, transform.rotation);
+		Instantiate (muzzleFlash, gunTip.transform.position, Quaternion.identity);
 	}
 
-	public void SetProperties(float damage, float range, float accuracy, GameObject hitParticle, GameObject hitDirtParticle, 
-		GameObject shellsParticle)
+	public void SetProperties(float damage, float range, float accuracy, GameObject hitParticle, GameObject shellsParticle, 
+		GameObject muzzleFlash)
 	{
 		this.damage = damage;
 		this.range = range;
-		this.hitParticle = hitParticle;
-		this.hitDirtParticle = hitDirtParticle;
-		this.shellsParticle = shellsParticle;
 		this.accuracy = (100 - accuracy)/100;
+
+		this.hitParticle = hitParticle;
+		this.shellsParticle = shellsParticle;
+		this.muzzleFlash = muzzleFlash;
 	}
 		
 }

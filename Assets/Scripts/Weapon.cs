@@ -4,17 +4,10 @@ using UnityEngine;
 
 public class Weapon : MonoBehaviour {
 
-	float range = 0.5f;
 	GameObject hitParticle;
 
 
-	// Update is called once per frame
-	void Update () 
-	{
-		Debug.DrawRay (transform.position, -transform.up * range, Color.red);
-	}
-
-	public void Attack(float damage)
+	public void Attack(float damage, float range)
 	{
 		RaycastHit hit;
 
@@ -24,12 +17,13 @@ public class Weapon : MonoBehaviour {
 			if (health != null)
 			{
 				health.TakeDamage (damage);
-				Instantiate (hitParticle, hit.point, Quaternion.identity);
+				if (health.hitEffect != null)
+					Instantiate (health.hitEffect, hit.point, Quaternion.LookRotation(hit.normal));
 			}
 		}
 	}
 
-	public bool IsHittingEnemy()
+	public bool IsHittingEnemy(float range)
 	{
 		RaycastHit hit;
 		if (Physics.Raycast (transform.position, -transform.up, out hit, range) && hit.collider.gameObject.tag == "Player")

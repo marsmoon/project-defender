@@ -2,14 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerControls : MonoBehaviour {
+public class PlayerControls : GunVariables {
 
-	public float damage = 15f;
-	public float range = 20f;
-	[Range(0f, 100f)] public float accuracy = 75f;
-	public GameObject hitParticle;
-	public GameObject hitDirtParticle;
-	public GameObject shellsParticle;
+	[Header("")]
+	public float damage = 10f;
+	public float range = 1f;
 	Gun gun;
 
 
@@ -20,7 +17,7 @@ public class PlayerControls : MonoBehaviour {
 		if (gun == null)
 			Debug.LogWarning ("No gun!");
 
-		gun.SetProperties(damage, range, accuracy, hitParticle, hitDirtParticle, shellsParticle);
+		gun.SetProperties(damage, range, accuracy, hitParticle, shellsParticle, muzzleFlash);
 	}
 	
 	// Update is called once per frame
