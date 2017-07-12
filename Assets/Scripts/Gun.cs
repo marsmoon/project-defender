@@ -51,8 +51,15 @@ public class Gun : MonoBehaviour {
 			if (health != null)
 			{
 				health.TakeDamage (damage);
-				if (health.hitEffect != null)
-					Instantiate (health.hitEffect, hit.point, Quaternion.LookRotation(hit.normal));
+				GameObject hitEffect;
+
+				if (damage >= 20)
+					hitEffect = health.hitEffectBig;
+				else
+					hitEffect = health.hitEffect;
+
+				if (hitEffect != null)
+					Instantiate (hitEffect, hit.point, Quaternion.LookRotation (hit.normal));
 			}
 
 		} else
