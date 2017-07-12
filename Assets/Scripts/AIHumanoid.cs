@@ -10,6 +10,13 @@ public class AIHumanoid : AI {
 	Weapon[] weapons;
 	GameObject mainPlayerCharacter;
 	NavMeshPath path;
+	Personality personality;
+
+	public enum Personality
+	{
+		dumb,
+		smart
+	};
 
 
 	// Use this for initialization
@@ -20,6 +27,7 @@ public class AIHumanoid : AI {
 		base.Start ();
 		mainPlayerCharacter = GameObject.FindObjectOfType<PlayerControls> ().gameObject;
 		path = new NavMeshPath();
+		personality = (Personality)Random.Range (0, 2);
 	}
 
 	protected override void Update()
@@ -28,7 +36,8 @@ public class AIHumanoid : AI {
 
 		if (searchTimer <= 0)
 		{
-			if (agent.CalculatePath (mainPlayerCharacter.transform.position, path) && path.status != NavMeshPathStatus.PathPartial)
+			if (personality == Personality.smart && agent.CalculatePath (mainPlayerCharacter.transform.position, path) 
+				&& path.status != NavMeshPathStatus.PathPartial)
 			{
 				attackTarget = mainPlayerCharacter;
 
@@ -57,11 +66,22 @@ public class AIHumanoid : AI {
 	protected override void Attack(GameObject target)
 	{
 		Collider col = target.GetComponent<Collider> ();
+		Bounds bounds;
+		Vector3 targetPos;
+
 		if (col == null)
 			col = target.GetComponentInChildren<Collider> ();
-		
-		Bounds bounds = col.bounds;
-		Vector3 targetPos = bounds.ClosestPoint (transform.position);
+
+		if (col == null)
+		{
+			targetPos = target.transform.position;
+
+		} else
+		{
+			bounds = col.bounds;
+			targetPos = bounds.ClosestPoint (transform.position);
+		}
+			
 
 		float dist = Vector3.Distance (targetPos, transform.position);
 		if (dist <= range)
