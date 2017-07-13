@@ -9,10 +9,12 @@ public class Gun : MonoBehaviour {
 	GameObject shellsParticle;
 	GameObject shellsSpawn;
 	GameObject muzzleFlash;
+	GameObject bullet;
 	float damage;
 	float range;
 	float accuracy;
 	LayerMask layerMask = 1 << 8;
+	bool isMainPlayersGun = false;
 
 
 	// Use this for initialization
@@ -28,12 +30,15 @@ public class Gun : MonoBehaviour {
 			Debug.LogWarning ("No Shells");
 
 		shellsSpawn.transform.localPosition = new Vector3(-0.65f, -0.2f, -1f);
+
+		if (transform.parent.gameObject.GetComponent<PlayerControls> () != null)
+			isMainPlayersGun = true;
 	}
 	
 	// Update is called once per frame
 	void Update () 
 	{
-		Debug.DrawRay (gunTip.transform.position, gunTip.transform.forward * range, Color.red);
+//		Debug.DrawRay (gunTip.transform.position, gunTip.transform.forward * range, Color.red);
 	}
 
 	public void Fire()
@@ -45,12 +50,15 @@ public class Gun : MonoBehaviour {
 
 		Ray ray = new Ray (gunTip.transform.position, dir);
 
+		GameObject bulletInstance;
+		Vector3 targetPos;
+
 		if (Physics.Raycast (ray, out hit, range, layerMask))
 		{
 			Health health = hit.collider.gameObject.GetComponent<Health> ();
 			if (health != null)
 			{
-				health.TakeDamage (damage);
+				health.TakeDamage (damage, isMainPlayersGun);
 				GameObject hitEffect;
 
 				if (damage >= 20)
@@ -62,17 +70,24 @@ public class Gun : MonoBehaviour {
 					Instantiate (hitEffect, hit.point, Quaternion.LookRotation (hit.normal));
 			}
 
+			targetPos = hit.point;
+
 		} else
 		{
 			Instantiate (hitParticle, ray.GetPoint (range), Quaternion.identity);
+			targetPos = ray.GetPoint (range);
 		}
 
 		Instantiate (shellsParticle, shellsSpawn.transform.position, transform.rotation);
 		Instantiate (muzzleFlash, gunTip.transform.position, Quaternion.identity);
+
+		bulletInstance = Instantiate (bullet, gunTip.transform.position, gunTip.transform.rotation);
+//		bulletInstance.GetComponent<Bullet> ().SetDir (dir);
+		bulletInstance.GetComponent<Bullet> ().SetPos (targetPos);
 	}
 
 	public void SetProperties(float damage, float range, float accuracy, GameObject hitParticle, GameObject shellsParticle, 
-		GameObject muzzleFlash)
+		GameObject muzzleFlash, GameObject bullet)
 	{
 		this.damage = damage;
 		this.range = range;
@@ -81,6 +96,7 @@ public class Gun : MonoBehaviour {
 		this.hitParticle = hitParticle;
 		this.shellsParticle = shellsParticle;
 		this.muzzleFlash = muzzleFlash;
+		this.bullet = bullet;
 	}
 		
 }

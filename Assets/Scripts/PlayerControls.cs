@@ -7,7 +7,9 @@ public class PlayerControls : GunVariables {
 	[Header("")]
 	public float damage = 10f;
 	public float range = 1f;
+	int money = 0;
 	Gun gun;
+	UIManager uiManager;
 
 
 	// Use this for initialization
@@ -17,7 +19,9 @@ public class PlayerControls : GunVariables {
 		if (gun == null)
 			Debug.LogWarning ("No gun!");
 
-		gun.SetProperties(damage, range, accuracy, hitParticle, shellsParticle, muzzleFlash);
+		uiManager = GameObject.Find ("_GameManager_").GetComponent<UIManager> ();
+
+		gun.SetProperties(damage, range, accuracy, hitParticle, shellsParticle, muzzleFlash, bullet);
 	}
 	
 	// Update is called once per frame
@@ -42,6 +46,12 @@ public class PlayerControls : GunVariables {
 	private Vector3 GetCurrentMousePos(){
 		Vector3 currentPos = Camera.main.ScreenToWorldPoint (Input.mousePosition);
 		return currentPos;
+	}
+
+	public void GetThatMoney(int amount)
+	{
+		money += amount;
+		uiManager.SetMoneyCounter (money);
 	}
 
 }

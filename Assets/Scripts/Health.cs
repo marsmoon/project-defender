@@ -5,27 +5,32 @@ using UnityEngine;
 public class Health : MonoBehaviour {
 
 	public float maxHealth = 50f;
-	public float health;
+	float health;
 	public GameObject hitEffect;
 	public GameObject hitEffectBig;
+	AIHumanoid humanoidScript;
 
 
 	// Use this for initialization
 	void Start () 
 	{
 		health = maxHealth;	
+		humanoidScript = gameObject.GetComponent<AIHumanoid> ();
 	}
 		
-	public void TakeDamage(float amount)
+	public void TakeDamage(float amount, bool dealtByMainPlayerCharacter)
 	{
 		health -= amount;
 
 		if (health <= 0)
-			Die ();
+			Die (dealtByMainPlayerCharacter);
 	}
 
-	void Die()
+	void Die(bool wasKilledByMainPlayerCharacter)
 	{
+		if (wasKilledByMainPlayerCharacter && humanoidScript != null)
+			humanoidScript.DropMoney ();
+		
 		Destroy (gameObject);
 	}
 }

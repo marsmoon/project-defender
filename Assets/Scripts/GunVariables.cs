@@ -10,5 +10,6 @@ public class GunVariables : MonoBehaviour {
 	public GameObject hitParticle;
 	public GameObject shellsParticle;
 	public GameObject muzzleFlash;
+	public GameObject bullet;
 
 }

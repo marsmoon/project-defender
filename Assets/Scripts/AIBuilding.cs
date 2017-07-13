@@ -25,7 +25,7 @@ public class AIBuilding : AI {
 			Debug.LogWarning ("no gunVariables!");
 
 		gun.SetProperties(damage, range, gunVariables.accuracy, gunVariables.hitParticle, gunVariables.shellsParticle, 
-			gunVariables.muzzleFlash);
+			gunVariables.muzzleFlash, gunVariables.bullet);
 	}
 
 	// Update is called once per frame

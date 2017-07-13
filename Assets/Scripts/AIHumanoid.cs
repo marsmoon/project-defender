@@ -5,6 +5,7 @@ using UnityEngine.AI;
 
 public class AIHumanoid : AI {
 
+	public int moneyDropAmount = 5;
 	NavMeshAgent agent;
 	Vector3 lastDestination = Vector3.zero;
 	Weapon[] weapons;
@@ -136,6 +137,12 @@ public class AIHumanoid : AI {
 		}
 
 		return false;
+	}
+
+	public void DropMoney()
+	{
+		if (mainPlayerCharacter != null)
+			mainPlayerCharacter.GetComponent<PlayerControls> ().GetThatMoney (moneyDropAmount);
 	}
 		
 }

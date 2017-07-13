@@ -16,7 +16,7 @@ public class Weapon : MonoBehaviour {
 			Health health = hit.collider.gameObject.GetComponent<Health> ();
 			if (health != null)
 			{
-				health.TakeDamage (damage);
+				health.TakeDamage (damage, false);
 				if (health.hitEffect != null)
 					Instantiate (health.hitEffect, hit.point, Quaternion.LookRotation(hit.normal));
 			}
