@@ -12,7 +12,7 @@ public class Bullet : MonoBehaviour {
 	void Update () {
 		if (ready)
 		{
-			transform.position = Vector3.Lerp (transform.position, targetPos, 50f * Time.deltaTime);
+			transform.position = Vector3.Lerp (transform.position, targetPos, 20f * Time.deltaTime);
 			if (transform.position == targetPos)
 				Destroy (gameObject);
 		}

@@ -48,10 +48,11 @@ public class PlayerControls : GunVariables {
 		return currentPos;
 	}
 
-	public void GetThatMoney(int amount)
+	public void GetThatMoney(int amount, Vector3 dropPos)
 	{
 		money += amount;
 		uiManager.SetMoneyCounter (money);
+		uiManager.DisplayDolarEffect (dropPos);
 	}
 
 }

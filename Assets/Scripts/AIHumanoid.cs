@@ -142,7 +142,7 @@ public class AIHumanoid : AI {
 	public void DropMoney()
 	{
 		if (mainPlayerCharacter != null)
-			mainPlayerCharacter.GetComponent<PlayerControls> ().GetThatMoney (moneyDropAmount);
+			mainPlayerCharacter.GetComponent<PlayerControls> ().GetThatMoney (moneyDropAmount, transform.position);
 	}
 		
 }
