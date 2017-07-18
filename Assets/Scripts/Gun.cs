@@ -8,7 +8,7 @@ public class Gun : MonoBehaviour {
 	GameObject hitParticle;
 	GameObject shellsParticle;
 	GameObject shellsSpawn;
-	GameObject muzzleFlash;
+	GameObject[] muzzleEffects;
 	GameObject bullet;
 	float damage;
 	float range;
@@ -34,12 +34,6 @@ public class Gun : MonoBehaviour {
 		if (transform.parent.gameObject.GetComponent<PlayerControls> () != null)
 			isMainPlayersGun = true;
 	}
-	
-	// Update is called once per frame
-	void Update () 
-	{
-//		Debug.DrawRay (gunTip.transform.position, gunTip.transform.forward * range, Color.red);
-	}
 
 	public void Fire()
 	{
@@ -60,11 +54,7 @@ public class Gun : MonoBehaviour {
 			{
 				health.TakeDamage (damage, isMainPlayersGun);
 				GameObject hitEffect;
-
-				if (damage >= 20)
-					hitEffect = health.hitEffectBig;
-				else
-					hitEffect = health.hitEffect;
+				hitEffect = health.hitEffect;
 
 				if (hitEffect != null)
 					Instantiate (hitEffect, hit.point, Quaternion.LookRotation (hit.normal));
@@ -79,15 +69,17 @@ public class Gun : MonoBehaviour {
 		}
 
 		Instantiate (shellsParticle, shellsSpawn.transform.position, transform.rotation);
-		Instantiate (muzzleFlash, gunTip.transform.position, Quaternion.identity);
+
+		if (muzzleEffects != null && muzzleEffects.Length > 0)
+			for(int i = 0; i < muzzleEffects.Length; i++)
+				Instantiate (muzzleEffects[i], gunTip.transform.position, Quaternion.identity);
 
 		bulletInstance = Instantiate (bullet, gunTip.transform.position, gunTip.transform.rotation);
-//		bulletInstance.GetComponent<Bullet> ().SetDir (dir);
 		bulletInstance.GetComponent<Bullet> ().SetPos (targetPos);
 	}
 
 	public void SetProperties(float damage, float range, float accuracy, GameObject hitParticle, GameObject shellsParticle, 
-		GameObject muzzleFlash, GameObject bullet)
+		GameObject[] muzzleEffects, GameObject bullet)
 	{
 		this.damage = damage;
 		this.range = range;
@@ -95,7 +87,7 @@ public class Gun : MonoBehaviour {
 
 		this.hitParticle = hitParticle;
 		this.shellsParticle = shellsParticle;
-		this.muzzleFlash = muzzleFlash;
+		this.muzzleEffects = muzzleEffects;
 		this.bullet = bullet;
 	}
 		

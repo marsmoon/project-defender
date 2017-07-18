@@ -9,7 +9,7 @@ public class GunVariables : MonoBehaviour {
 	[Header("Effects")]
 	public GameObject hitParticle;
 	public GameObject shellsParticle;
-	public GameObject muzzleFlash;
+	public GameObject[] muzzleEffects;
 	public GameObject bullet;
 
 }

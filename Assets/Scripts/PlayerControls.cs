@@ -6,7 +6,10 @@ public class PlayerControls : GunVariables {
 
 	[Header("")]
 	public float damage = 10f;
+	public float fireRate = 5f;
 	public float range = 1f;
+	public GameObject[] buildings;
+	float nextTimeToFire = 0f;
 	int money = 0;
 	Gun gun;
 	UIManager uiManager;
@@ -21,7 +24,7 @@ public class PlayerControls : GunVariables {
 
 		uiManager = GameObject.Find ("_GameManager_").GetComponent<UIManager> ();
 
-		gun.SetProperties(damage, range, accuracy, hitParticle, shellsParticle, muzzleFlash, bullet);
+		gun.SetProperties(damage, range, accuracy, hitParticle, shellsParticle, muzzleEffects, bullet);
 	}
 	
 	// Update is called once per frame
@@ -29,8 +32,40 @@ public class PlayerControls : GunVariables {
 	{
 		SetGunRotation (GetCurrentMousePos ());
 
-		if (Input.GetButtonDown ("Fire1"))
+		if (Input.GetButton ("Fire1") && Time.time >= nextTimeToFire)
+		{
+			nextTimeToFire = Time.time + 1 / fireRate;
 			gun.Fire ();
+		}
+
+
+		int buildingToSpawn = 0;
+		int cost = 0;
+
+		if (Input.GetKeyDown (KeyCode.Alpha1))
+			buildingToSpawn = 1;
+
+		if (Input.GetKeyDown (KeyCode.Alpha2))
+			buildingToSpawn = 2;
+
+		if ((buildingToSpawn == 1 || buildingToSpawn == 2) && buildings != null && buildings.Length > 0)
+		{
+			if (buildingToSpawn == 1)
+				cost = 10;
+			else if (buildingToSpawn == 2)
+				cost = 50;
+
+			if (money - cost >= 0)
+			{
+				buildingToSpawn--;
+				Vector3 spawnPos = Camera.main.ScreenToWorldPoint (Input.mousePosition);
+				GameObject building = Instantiate (buildings [buildingToSpawn], spawnPos, buildings [buildingToSpawn].transform.rotation);
+				building.AddComponent<PlaceholderBuilding> ();
+				money -= cost;
+				uiManager.SetMoneyCounter (money);
+			}
+		}
+
 	}
 
 	// sets the current gun rotation based on the current mouse position

@@ -7,20 +7,14 @@ public class UIManager : MonoBehaviour {
 
 	public GameObject dolarEffect;
 	Text moneyCounter;
+	Text waveText;
 	float money;
 
 
 	// Use this for initialization
 	void Start () {
 		moneyCounter = GameObject.Find ("MoneyCounter").GetComponent<Text> ();
-//		dolarEffect = GameObject.Find ("DolarEffect").GetComponent<Text> ();
-
-//		dolarEffect.color.a = 0;
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
+		GetWaveText ();
 	}
 
 	public void SetMoneyCounter(int amount)
@@ -32,5 +26,20 @@ public class UIManager : MonoBehaviour {
 	{
 		position.y = 1f;
 		Instantiate (dolarEffect, position, dolarEffect.transform.rotation);
+	}
+
+	public void FadeOutWaveText(int wave)
+	{
+		if (waveText == null)
+			GetWaveText ();
+
+		waveText.text = "Wave " + wave;
+		waveText.CrossFadeAlpha (1f, 0f, true);
+		waveText.CrossFadeAlpha (0f, 200f * Time.deltaTime, true);
+	}
+
+	void GetWaveText()
+	{
+		waveText = GameObject.Find ("WaveText").GetComponent<Text> ();
 	}
 }

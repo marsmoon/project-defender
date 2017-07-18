@@ -7,7 +7,6 @@ public class Health : MonoBehaviour {
 	public float maxHealth = 50f;
 	float health;
 	public GameObject hitEffect;
-	public GameObject hitEffectBig;
 	AIHumanoid humanoidScript;
 
 
@@ -33,4 +32,5 @@ public class Health : MonoBehaviour {
 		
 		Destroy (gameObject);
 	}
+
 }

@@ -10,6 +10,7 @@ public class WaveManager : MonoBehaviour {
 	public float winConditionTimer;
 	int currentWave;
 	Spawner[] spawners;
+	UIManager uiManager;
 
 	public enum EnemyType
 	{
@@ -22,6 +23,7 @@ public class WaveManager : MonoBehaviour {
 	void Start () {
 		currentWave = 1;
 		spawners = GameObject.FindObjectsOfType<Spawner> ();
+		uiManager = GetComponent<UIManager> ();
 		winConditionTimer = winConditionCheckInterval;
 		StartWave ();
 	}
@@ -61,6 +63,8 @@ public class WaveManager : MonoBehaviour {
 				}
 			}
 		}
+
+		uiManager.FadeOutWaveText (currentWave);
 	}
 
 }
