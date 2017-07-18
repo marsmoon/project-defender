@@ -30,6 +30,9 @@ public class Health : MonoBehaviour {
 		if (wasKilledByMainPlayerCharacter && humanoidScript != null)
 			humanoidScript.DropMoney ();
 		
+		if (transform.parent != null)
+			Destroy (transform.parent.gameObject);
+
 		Destroy (gameObject);
 	}
 

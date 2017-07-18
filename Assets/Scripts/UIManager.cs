@@ -8,12 +8,15 @@ public class UIManager : MonoBehaviour {
 	public GameObject dolarEffect;
 	Text moneyCounter;
 	Text waveText;
+	Text gameOverText;
 	float money;
 
 
 	// Use this for initialization
 	void Start () {
 		moneyCounter = GameObject.Find ("MoneyCounter").GetComponent<Text> ();
+		gameOverText = GameObject.Find ("GameOverText").GetComponent<Text> ();
+		gameOverText.gameObject.SetActive (false);
 		GetWaveText ();
 	}
 
@@ -41,5 +44,12 @@ public class UIManager : MonoBehaviour {
 	void GetWaveText()
 	{
 		waveText = GameObject.Find ("WaveText").GetComponent<Text> ();
+	}
+		
+	public void FadeInGameOverText()
+	{
+		gameOverText.gameObject.SetActive (true);
+		gameOverText.CrossFadeAlpha (0f, 0f, true);
+		gameOverText.CrossFadeAlpha (1f, 100f * Time.deltaTime, true);
 	}
 }

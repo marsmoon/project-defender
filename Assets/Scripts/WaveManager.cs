@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class WaveManager : MonoBehaviour {
 
@@ -11,6 +12,8 @@ public class WaveManager : MonoBehaviour {
 	int currentWave;
 	Spawner[] spawners;
 	UIManager uiManager;
+	GameObject playerCharacter;
+	bool isGameOver;
 
 	public enum EnemyType
 	{
@@ -21,25 +24,38 @@ public class WaveManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		isGameOver = false;
 		currentWave = 1;
 		spawners = GameObject.FindObjectsOfType<Spawner> ();
 		uiManager = GetComponent<UIManager> ();
 		winConditionTimer = winConditionCheckInterval;
 		StartWave ();
+		playerCharacter = GameObject.Find ("PlayerTurret");
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update () 
+	{
+		if (isGameOver)
+			return;
+		
 		winConditionTimer -= Time.deltaTime;
 
 		if (winConditionTimer <= 0)
 		{
+			if (playerCharacter == null)
+			{
+				GameOver ();
+				return;
+			}
+
 			if (GameObject.FindGameObjectsWithTag ("Enemy").Length == 0)
 			{
 				currentWave++;
 				StartWave ();
-				winConditionTimer = winConditionCheckInterval;
 			}
+
+			winConditionTimer = winConditionCheckInterval;
 		}
 	}
 
@@ -65,6 +81,19 @@ public class WaveManager : MonoBehaviour {
 		}
 
 		uiManager.FadeOutWaveText (currentWave);
+	}
+
+	void GameOver()
+	{
+		isGameOver = true;
+		Time.timeScale = 0f;
+		uiManager.FadeInGameOverText ();
+	}
+
+	public void RestartLevel()
+	{
+		Time.timeScale = 1f;
+		SceneManager.LoadScene (SceneManager.GetActiveScene ().buildIndex);
 	}
 
 }

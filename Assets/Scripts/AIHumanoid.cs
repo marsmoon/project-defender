@@ -5,7 +5,8 @@ using UnityEngine.AI;
 
 public class AIHumanoid : AI {
 
-	public int moneyDropAmount = 5;
+	public int minMoneyDropAmount = 5;
+	public int maxMoneyDropAmount = 10;
 	NavMeshAgent agent;
 	Vector3 lastDestination = Vector3.zero;
 	Weapon[] weapons;
@@ -142,7 +143,7 @@ public class AIHumanoid : AI {
 	public void DropMoney()
 	{
 		if (mainPlayerCharacter != null)
-			mainPlayerCharacter.GetComponent<PlayerControls> ().GetThatMoney (moneyDropAmount, transform.position);
+			mainPlayerCharacter.GetComponent<PlayerControls> ().GetThatMoney (Random.Range(minMoneyDropAmount, maxMoneyDropAmount), transform.position);
 	}
 		
 }
